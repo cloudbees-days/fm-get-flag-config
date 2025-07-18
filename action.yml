@@ -1,0 +1,58 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: fm-get-flag-config
+description: "Get feature flag configuration from CloudBees Feature Management"
+inputs:
+  token:
+    description: "CloudBees Feature Management API token"
+    required: true
+  org-id:
+    description: "CloudBees organization ID"
+    required: true
+  application-name:
+    description: "Application name where the flag is defined"
+    required: true
+  flag-name:
+    description: "Name of the feature flag to retrieve"
+    required: true
+  environment-name:
+    description: "Environment name to get flag configuration from"
+    required: true
+  api-url:
+    description: "CloudBees API URL"
+    default: "https://api.cloudbees.io"
+    required: false
+
+outputs:
+  flag-config:
+    value: ${{ steps.get-flag-config.outputs.flag-config }}
+    description: "The current flag configuration as JSON"
+  flag-id:
+    value: ${{ steps.get-flag-config.outputs.flag-id }}
+    description: "The ID of the feature flag"
+  environment-id:
+    value: ${{ steps.get-flag-config.outputs.environment-id }}
+    description: "The ID of the environment"
+  enabled:
+    value: ${{ steps.get-flag-config.outputs.enabled }}
+    description: "Whether the flag is enabled"
+  default-value:
+    value: ${{ steps.get-flag-config.outputs.default-value }}
+    description: "The default value of the flag"
+
+runs:
+  using: composite
+  steps:
+    - id: get-flag-config
+      name: Get Flag Configuration
+      uses: docker://ldonleycb/fm-actions:latest
+      shell: sh
+      run: |
+        /app/fm-actions get-flag-config \
+          --token "${{ inputs.token }}" \
+          --org-id "${{ inputs.org-id }}" \
+          --application-name "${{ inputs.application-name }}" \
+          --flag-name "${{ inputs.flag-name }}" \
+          --environment-name "${{ inputs.environment-name }}" \
+          --api-url "${{ inputs.api-url }}" \
+          --verbose
