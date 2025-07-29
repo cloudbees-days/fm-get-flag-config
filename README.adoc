@@ -43,6 +43,11 @@ Retrieve the current configuration of a feature flag from CloudBees Feature Mana
 | No
 | CloudBees API base URL. Default is `https://api.cloudbees.io`
 
+| `use-org-as-app`
+| Boolean
+| No
+| Use organization ID as application ID for flags API (original mode). Default is `false`
+
 |===
 
 == Outputs
