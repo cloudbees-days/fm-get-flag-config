@@ -49,7 +49,7 @@ runs:
   steps:
     - id: get-flag-config
       name: Get Flag Configuration
-      uses: docker://ldonleycb/fm-actions:latest
+      uses: docker://ldonleycb/fm-actions:25.07.29
       shell: sh
       run: |
         /app/fm-actions get-flag-config \
